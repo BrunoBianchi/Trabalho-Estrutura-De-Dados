@@ -261,13 +261,8 @@ int main()
         switch (op)
         {
         case 1:
+            insereU(&inicio, nome, 0);
             fflush(stdin);
-            printf("insira uma universidade:");
-            gets(nome);
-            fflush(stdin);
-            insere(&inicio, nome, 0);
-            printf("deseja inserir mais?");
-            scanf("%d", &op);
             salvaDados(inicio);
             break;
         case 2:
