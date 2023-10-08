@@ -19,45 +19,63 @@ typedef struct Universidade
     struct Aluno *inicioAluno;
 } Universidade;
 
-
-
-void insereU(Universidade** inicio, char nome[], int qtdAlunos) {
-    
-    int compara;
-    Universidade* aux2 = *inicio;
-
-    while(aux2->prox != NULL && compara != 0){
-        
-        compara = strcmp(nome, aux2->nome);
-        aux2 = aux2->prox;
-    }
-    
-    if(compara == 0){
-        printf("Universidade já inserida no sistema!\n");
-    }
-
-    else{
-
-    Universidade* nova_uni = malloc(sizeof(Universidade));
-    strcpy(nova_uni->nome, nome);
-    nova_uni->qtdAlunos = qtdAlunos;
-    nova_uni->prox = NULL;
-    nova_uni->inicioAluno = NULL;
-
-    if (*inicio == NULL)
+void imprime(Universidade *head)
+{
+    printf("a");
+    if (head == NULL)
     {
-        *inicio = nova_uni;
+        printf("Lista vazia");
         return;
     }
 
-    Universidade *aux = *inicio;
-    while (aux->prox != NULL)
+    Universidade *aux = head;
+    while (aux != NULL)
     {
+        printf("%s ", aux->nome);
         aux = aux->prox;
     }
-    aux->prox = nova_uni;
+}
+
+void insereU(Universidade **inicio, char nome[], int qtdAlunos)
+{
+
+    int compara;
+    Universidade *aux2 = *inicio;
+
+    while (aux2->prox != NULL && compara != 0)
+    {
+
+        compara = strcmp(nome, aux2->nome);
+        aux2 = aux2->prox;
     }
 
+    if (compara == 0)
+    {
+        printf("Universidade já inserida no sistema!\n");
+    }
+
+    else
+    {
+
+        Universidade *nova_uni = malloc(sizeof(Universidade));
+        strcpy(nova_uni->nome, nome);
+        nova_uni->qtdAlunos = qtdAlunos;
+        nova_uni->prox = NULL;
+        nova_uni->inicioAluno = NULL;
+
+        if (*inicio == NULL)
+        {
+            *inicio = nova_uni;
+            return;
+        }
+
+        Universidade *aux = *inicio;
+        while (aux->prox != NULL)
+        {
+            aux = aux->prox;
+        }
+        aux->prox = nova_uni;
+    }
 }
 
 void salvaDados(Universidade *inicio)
@@ -94,43 +112,51 @@ void salvaDados(Universidade *inicio)
 
 void removerUniversidade(Universidade **inicio)
 {
-    printf("Digite o nome da universidade:\n");
-    char universidadeName[30];
-    scanf("%s", &universidadeName);
-    universidadeName[strlen(universidadeName) + 1] = '\0';
-    Universidade *aux = *inicio;
 
-    // Percorrer as universidades ate encontrar um valor de aux que tenha o nome da universidade
-    while (aux->prox != NULL)
+    if (*inicio == NULL)
     {
+        printf("Lista Vazia!");
+    }
+    else
+    {
+        printf("Digite o nome da universidade:\n");
+        char universidadeName[30];
+        scanf("%s", &universidadeName);
+        universidadeName[strlen(universidadeName) + 1] = '\0';
+        Universidade *aux = *inicio;
 
-        if (strcmp(aux->nome, universidadeName) == 0)
+        // Percorrer as universidades ate encontrar um valor de aux que tenha o nome da universidade
+        while (aux->prox != NULL)
         {
-            break;
-        }
-        aux = aux->prox;
-    }
-    aux->nome[strlen(aux->nome) + 1] = '\0';
-    if (aux->prox == NULL && strcmp(aux->nome, universidadeName) != 0 || strcmp(aux->nome, universidadeName) != 0)
-    {
-        printf("Universidade nao encontrada!\n");
-        return;
-    }
-    // Percorrer todos os alunos e ir dando free neles!
-    Aluno *aux_Aluno = aux->inicioAluno;
-    Aluno *aux_Aluno_anterior = aux->inicioAluno;
-    if (aux_Aluno != NULL)
-    {
-        while (aux_Aluno->prox != NULL)
-        {
-            aux_Aluno_anterior = aux_Aluno;
-            aux_Aluno = aux_Aluno->prox;
-            free(aux_Aluno_anterior);
-        }
-    }
 
-    free(aux);
-    printf("Universidade Deletada!");
+            if (strcmp(aux->nome, universidadeName) == 0)
+            {
+                break;
+            }
+            aux = aux->prox;
+        }
+        aux->nome[strlen(aux->nome) + 1] = '\0';
+        if (aux->prox == NULL && strcmp(aux->nome, universidadeName) != 0 || strcmp(aux->nome, universidadeName) != 0)
+        {
+            printf("Universidade nao encontrada!\n");
+            return;
+        }
+        // Percorrer todos os alunos e ir dando free neles!
+        Aluno *aux_Aluno = aux->inicioAluno;
+        Aluno *aux_Aluno_anterior = aux->inicioAluno;
+        if (aux_Aluno != NULL)
+        {
+            while (aux_Aluno->prox != NULL)
+            {
+                aux_Aluno_anterior = aux_Aluno;
+                aux_Aluno = aux_Aluno->prox;
+                free(aux_Aluno_anterior);
+            }
+        }
+        free(aux);
+        printf("Universidade Deletada!");
+        imprime(*inicio);
+    }
 }
 
 Universidade *recuperaDados(Universidade **inicio)
@@ -216,22 +242,6 @@ Universidade *recuperaDados(Universidade **inicio)
     return *inicio;
 }
 
-void imprime(Universidade *head)
-{
-    if (head == NULL)
-    {
-        printf("Lista vazia");
-        return;
-    }
-
-    Universidade *aux = head;
-    while (aux != NULL)
-    {
-        printf("%s ", aux->nome);
-        aux = aux->prox;
-    }
-}
-
 int main()
 {
     Universidade *inicio = NULL;
@@ -253,7 +263,7 @@ int main()
             printf("insira uma universidade:");
             gets(nome);
             fflush(stdin);
-            insere(&inicio, nome, 0);
+            insereU(&inicio, nome, 0);
             printf("deseja inserir mais?");
             scanf("%d", &op);
             salvaDados(inicio);
