@@ -19,9 +19,31 @@ typedef struct Universidade
     struct Aluno *inicioAluno;
 } Universidade;
 
+<<<<<<< Updated upstream
 void insere(Universidade **inicio, char nome[], int qtdAlunos)
 {
     Universidade *nova_uni = malloc(sizeof(Universidade));
+=======
+
+void insereU(Universidade** inicio, char nome[], int qtdAlunos) {
+    
+    int compara;
+    Universidade* aux2 = *inicio;
+
+    while(aux2->prox != NULL && compara != 0){
+        
+        compara = strcmp(nome, aux2->nome);
+        aux2 = aux2->prox;
+    }
+    
+    if(compara == 0){
+        printf("Universidade já inserida no sistema!\n");
+    }
+
+    else{
+
+    Universidade* nova_uni = malloc(sizeof(Universidade));
+>>>>>>> Stashed changes
     strcpy(nova_uni->nome, nome);
     nova_uni->qtdAlunos = qtdAlunos;
     nova_uni->prox = NULL;
@@ -33,12 +55,20 @@ void insere(Universidade **inicio, char nome[], int qtdAlunos)
         return;
     }
 
+<<<<<<< Updated upstream
     Universidade *aux = *inicio;
     while (aux->prox != NULL)
     {
+=======
+    Universidade* aux = *inicio;
+
+    while (aux->prox != NULL) {
+>>>>>>> Stashed changes
         aux = aux->prox;
     }
     aux->prox = nova_uni;
+    }
+
 }
 
 void salvaDados(Universidade *inicio)
@@ -222,6 +252,7 @@ int main()
 
     // imprime(inicio);
 
+<<<<<<< Updated upstream
     while (op != 0)
     {
         printf("\n\nMenu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
@@ -246,6 +277,25 @@ int main()
             printf("Menu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
         }
     }
+=======
+	while(op == 1){
+		fflush(stdin);
+    	printf("insira uma universidade:");
+    	gets(nome);
+    	
+    	fflush(stdin);
+    	
+    	insereU(&inicio, nome, 0);
+    	
+    	printf("deseja inserir mais?");
+    	scanf("%d", &op);
+    	
+	}
+	
+	imprime(inicio);
+	
+    salvaDados(inicio);
+>>>>>>> Stashed changes
 
     return 0;
 }
