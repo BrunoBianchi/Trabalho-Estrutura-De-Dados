@@ -19,7 +19,7 @@ typedef struct Universidade
     struct Aluno *inicioAluno;
 } Universidade;
 
-void imprime(Universidade *head)
+void imprimeU(Universidade *head)
 {
     if (head == NULL)
     {
@@ -32,6 +32,25 @@ void imprime(Universidade *head)
     {
         printf("%s ", aux->nome);
         aux = aux->prox;
+    }
+}
+
+void imprimeA(Universidade *(head->inicioAluno))
+{
+    if (head->inicioAluno == NULL)
+    {
+        printf("Lista vazia");
+        return;
+    }
+
+    Universidade *aux = head->inicioAluno;
+    while (aux->inicioAluno != NULL)
+    {
+        printf("Nome: %s\n", aux->inicioAluno->nome);
+        printf("Matrícula: %d\n", aux->inicioAluno->matricula);
+        printf("Idade: %d\n", aux->inicioAluno->idade);
+        printf("Quantidade de Matérias: %d\n\n\n", aux->inicioAluno->nroDisciplinas);
+        aux->inicioAluno = aux->inicioAluno->prox;
     }
 }
 
@@ -53,27 +72,25 @@ void insereU(Universidade **inicio, char nome[], int qtdAlunos)
         return;
     }
     else{
-    Universidade *aux2 = *inicio;
+    Universidade *aux = *inicio;
 
-    while (aux2->prox != NULL)
+    while (aux->prox != NULL)
     {
-        if (strcmp(nome, aux2->nome) == 0)
+        if (strcmp(nome, aux->nome) == 0)
         {
             printf("Universidade já inserida no sistema!\n");
             break;
         }
-        aux2 = aux2->prox;
-    }
-
-    Universidade *aux = *inicio;
-    while (aux->prox != NULL)
-    {
         aux = aux->prox;
     }
     
     aux->prox = nova_uni;
     return;
 }
+}
+
+void InsereA(Universidade **(inicio->inicioAluno), char nome[],){
+
 }
 
 void salvaDados(Universidade *inicio)
@@ -162,7 +179,7 @@ void removerUniversidade(Universidade **inicio)
 
 Universidade *recuperaDados(Universidade **inicio)
 {
-    FILE *file = fopen("lista_uni.txt", "w");
+    FILE *file = fopen("lista_uni.txt", "r");
     if (file == NULL)
     {
         printf("Arquivo inexistente, sera criado.\n");
@@ -246,12 +263,10 @@ Universidade *recuperaDados(Universidade **inicio)
 int main()
 {
     Universidade *inicio = NULL;
-    int op;
+    int op = 10;
     recuperaDados(&inicio);
     salvaDados(inicio);
     char nome[30];
-
-    // imprime(inicio);
 
     while (op != 0)
     {
@@ -260,13 +275,35 @@ int main()
 
         switch (op)
         {
+        case 0:
+            salvaDados(inicio);
+            break;
         case 1:
             insereU(&inicio, nome, 0);
             fflush(stdin);
             salvaDados(inicio);
+            imprimeU(inicio);
             break;
         case 2:
+            insereA(&inicio, nome, 0);
+            salvaDados(inicio);
+            imprimeA(inicio);
+            break;
+        case 3:
+            buscaUniversidade(inicio, nome);
+            break;
+        case 4:
+            buscaAluno(inicio, nome);
+            break;
+        case 5:
             removerUniversidade(&inicio);
+            imprimeU(inicio);
+            salvaDados(inicio);
+            break;
+        case 6:
+            removerAluno(&inicio);
+            imprimeA(inicio);
+            salvaDados(inicio);
             break;
         default:
             printf("Menu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
