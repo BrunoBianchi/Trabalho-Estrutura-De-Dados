@@ -35,22 +35,22 @@ void imprimeU(Universidade *head)
     }
 }
 
-void imprimeA(Universidade *(head->inicioAluno))
+void imprimeA(Aluno *head)
 {
-    if (head->inicioAluno == NULL)
+    if (head == NULL)
     {
         printf("Lista vazia");
         return;
     }
 
-    Universidade *aux = head->inicioAluno;
-    while (aux->inicioAluno != NULL)
+    Universidade *aux = head;
+    while (aux != NULL)
     {
-        printf("Nome: %s\n", aux->inicioAluno->nome);
-        printf("Matrícula: %d\n", aux->inicioAluno->matricula);
-        printf("Idade: %d\n", aux->inicioAluno->idade);
-        printf("Quantidade de Matérias: %d\n\n\n", aux->inicioAluno->nroDisciplinas);
-        aux->inicioAluno = aux->inicioAluno->prox;
+        printf("Nome: %s\n", aux->nome);
+        printf("Matrícula: %d\n", aux->matricula);
+        printf("Idade: %d\n", aux->idade);
+        printf("Quantidade de Matérias: %d\n\n\n", aux->nroDisciplinas);
+        aux = aux->prox;
     }
 }
 
