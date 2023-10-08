@@ -34,7 +34,6 @@ void imprimeU(Universidade *head)
         aux = aux->prox;
     }
 }
-
 void imprimeA(Aluno *head)
 {
     if (head == NULL)
@@ -53,7 +52,7 @@ void imprimeA(Aluno *head)
         aux = aux->prox;
     }
 }
-
+//TODO universidades iguais?
 void insereU(Universidade **inicio, char nome[], int qtdAlunos)
 {
     fflush(stdin);
@@ -88,7 +87,7 @@ void insereU(Universidade **inicio, char nome[], int qtdAlunos)
     return;
 }
 }
-
+//TODO Inserir ALuno
 void InsereA(Universidade **(inicio->inicioAluno), char nome[],){
 
 }
