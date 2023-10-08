@@ -21,7 +21,6 @@ typedef struct Universidade
 
 void imprime(Universidade *head)
 {
-    printf("a");
     if (head == NULL)
     {
         printf("Lista vazia");
@@ -228,6 +227,7 @@ int main()
     Universidade *inicio = NULL;
     int op;
     recuperaDados(&inicio);
+    salvaDados(inicio);
     char nome[30];
 
     // imprime(inicio);
@@ -256,6 +256,5 @@ int main()
             printf("Menu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
         }
     }
-
     return 0;
 }
