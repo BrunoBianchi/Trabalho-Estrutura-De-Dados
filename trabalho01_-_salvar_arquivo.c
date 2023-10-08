@@ -21,7 +21,6 @@ typedef struct Universidade
 
 void imprime(Universidade *head)
 {
-    printf("a");
     if (head == NULL)
     {
         printf("Lista vazia");
@@ -38,44 +37,43 @@ void imprime(Universidade *head)
 
 void insereU(Universidade **inicio, char nome[], int qtdAlunos)
 {
+    fflush(stdin);
+    printf("Insira uma Universidade: ");
+    fgets(nome, 30, stdin);
 
-    int compara;
+    Universidade *nova_uni = malloc(sizeof(Universidade));
+    strcpy(nova_uni->nome, nome);
+    nova_uni->qtdAlunos = qtdAlunos;
+    nova_uni->prox = NULL;
+    nova_uni->inicioAluno = NULL;
+
+    if (*inicio == NULL)
+    {
+        *inicio = nova_uni;
+        return;
+    }
+    else{
     Universidade *aux2 = *inicio;
 
-    while (aux2->prox != NULL && compara != 0)
+    while (aux2->prox != NULL)
     {
-
-        compara = strcmp(nome, aux2->nome);
+        if (strcmp(nome, aux2->nome) == 0)
+        {
+            printf("Universidade já inserida no sistema!\n");
+            break;
+        }
         aux2 = aux2->prox;
     }
 
-    if (compara == 0)
+    Universidade *aux = *inicio;
+    while (aux->prox != NULL)
     {
-        printf("Universidade já inserida no sistema!\n");
+        aux = aux->prox;
     }
-
-    else
-    {
-
-        Universidade *nova_uni = malloc(sizeof(Universidade));
-        strcpy(nova_uni->nome, nome);
-        nova_uni->qtdAlunos = qtdAlunos;
-        nova_uni->prox = NULL;
-        nova_uni->inicioAluno = NULL;
-
-        if (*inicio == NULL)
-        {
-            *inicio = nova_uni;
-            return;
-        }
-
-        Universidade *aux = *inicio;
-        while (aux->prox != NULL)
-        {
-            aux = aux->prox;
-        }
-        aux->prox = nova_uni;
-    }
+    
+    aux->prox = nova_uni;
+    return;
+}
 }
 
 void salvaDados(Universidade *inicio)
@@ -247,6 +245,7 @@ int main()
     Universidade *inicio = NULL;
     int op;
     recuperaDados(&inicio);
+    salvaDados(inicio);
     char nome[30];
 
     // imprime(inicio);
@@ -259,13 +258,8 @@ int main()
         switch (op)
         {
         case 1:
-            fflush(stdin);
-            printf("insira uma universidade:");
-            gets(nome);
-            fflush(stdin);
             insereU(&inicio, nome, 0);
-            printf("deseja inserir mais?");
-            scanf("%d", &op);
+            fflush(stdin);
             salvaDados(inicio);
             break;
         case 2:
@@ -275,6 +269,5 @@ int main()
             printf("Menu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
         }
     }
-
     return 0;
 }
