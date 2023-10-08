@@ -35,24 +35,45 @@ void imprime(Universidade *head)
     }
 }
 
-void insere(Universidade** inicio, char nome[], int qtdAlunos) {
-    Universidade* nova_uni = malloc(sizeof(Universidade));
+void insereU(Universidade **inicio, char nome[], int qtdAlunos)
+{
+    fflush(stdin);
+    printf("Insira uma Universidade: ");
+    fgets(nome, 30, stdin);
+
+    Universidade *nova_uni = malloc(sizeof(Universidade));
     strcpy(nova_uni->nome, nome);
     nova_uni->qtdAlunos = qtdAlunos;
     nova_uni->prox = NULL;
     nova_uni->inicioAluno = NULL;
 
-
-    if (*inicio == NULL) {
+    if (*inicio == NULL)
+    {
         *inicio = nova_uni;
         return;
     }
+    else{
+    Universidade *aux2 = *inicio;
 
-    Universidade* aux = *inicio;
-    while (aux->prox != NULL) {
+    while (aux2->prox != NULL)
+    {
+        if (strcmp(nome, aux2->nome) == 0)
+        {
+            printf("Universidade já inserida no sistema!\n");
+            break;
+        }
+        aux2 = aux2->prox;
+    }
+
+    Universidade *aux = *inicio;
+    while (aux->prox != NULL)
+    {
         aux = aux->prox;
     }
+    
     aux->prox = nova_uni;
+    return;
+}
 }
 
 void salvaDados(Universidade *inicio)
