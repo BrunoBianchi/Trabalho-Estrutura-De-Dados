@@ -133,47 +133,63 @@ void removerUniversidade(Universidade **inicio)
     }
     else
     {
-        printf("Digite o nome da universidade:\n");
-        char universidadeName[30];
-        scanf("%s", &universidadeName);
-        universidadeName[strlen(universidadeName) + 1] = '\0';
+        printf("Insira o nome da Universidade: ");
+        char nome[30];
+        scanf("%s", &nome);
+        getchar();
         Universidade *aux = *inicio;
-
-        // Percorrer as universidades ate encontrar um valor de aux que tenha o nome da universidade
-        while (aux->prox != NULL)
+        nome[strcspn(nome, "\n")] = '\0';
+        aux->nome[strcspn(aux->nome, "\n")] = '\0';
+        // Verificar se a Universidade eh a primeira
+        if (strcmp(aux->nome, nome) == 0)
         {
-
-            if (strcmp(aux->prox->nome, universidadeName) == 0)
+            *inicio = aux->prox;
+            printf("Universidade %s Removida!\n", aux->nome);
+            free(aux);
+            // Se nao for no inicio:
+        }
+        else
+        {
+            // Verificar se esta entre 2 outras Universidades
+            while (aux->prox != NULL)
             {
-                break;
+                aux->prox->nome[strcspn(aux->prox->nome, "\n")] = '\0';
+                // Pegar o anterior do ponteiro para a variavel que queremos remover
+                if (strcmp(aux->prox->nome, nome) == 0)
+                {
+                    break;
+                }
+                aux = aux->prox;
             }
-            aux = aux->prox;
-        }
-        aux->prox->nome[strlen(aux->prox->nome) + 1] = '\0';
-        printf("a");
-        if (aux->prox == NULL && strcmp(aux->prox->nome, universidadeName) != 0 || strcmp(aux->prox->nome, universidadeName) != 0)
-        {
-            printf("Universidade nao encontrada!\n");
-            return;
-        }
-        // Percorrer todos os alunos e ir dando free neles!
-        Aluno *aux_Aluno = aux->prox->inicioAluno;
-        Aluno *aux_Aluno_anterior = aux->prox->inicioAluno;
-        if (aux_Aluno != NULL)
-        {
-            while (aux_Aluno->prox != NULL)
+            if (aux->prox == NULL && strcmp(aux->nome, nome) != 0)
             {
-                aux_Aluno_anterior = aux_Aluno;
-                aux_Aluno = aux_Aluno->prox;
-                free(aux_Aluno_anterior);
+                printf("Universidade nao encontrada!\n");
+                return;
+            }
+            // Verificar se essa aux nao eh igual ao valor que queremos deletar, neste caso, vendo se nao existe!
+            if (aux->prox->prox == NULL && strcmp(aux->prox->nome, nome) != 0)
+            {
+                printf("Universidade nao encontrada!\n");
+                return;
+            }
+            printf("1a");
+            // Criando uma variavel para armazenar o endereco da universidade que queremos deletar!
+            Universidade *aux2 = aux->prox;
+            // Caso existe um prox da aux que queremos deletar
+            if (aux->prox->prox != NULL)
+            {
+                aux->prox = aux->prox->prox;
+                printf("Universidade %s Removida!\n", aux2->nome);
+                free(aux2);
+                return;
+            }
+            else
+            {
+                aux->prox = NULL;
+                printf("Universidade %s Removida!\n", aux2->nome);
+                free(aux2);
             }
         }
-        Universidade *aux2 = aux->prox;
-        aux->prox = aux->prox->prox;
-        
-        printf("Universidade %s Deletada!",aux2->nome);
-        free(aux2);
-        imprime(*inicio);
     }
 }
 
