@@ -42,7 +42,7 @@ void imprimeA(Aluno *head)
         return;
     }
 
-    Universidade *aux = head;
+    Aluno *aux = head;
     while (aux != NULL)
     {
         printf("Nome: %s\n", aux->nome);
@@ -52,7 +52,7 @@ void imprimeA(Aluno *head)
         aux = aux->prox;
     }
 }
-//TODO universidades iguais?
+// TODO universidades iguais?
 void insereU(Universidade **inicio, char nome[], int qtdAlunos)
 {
     fflush(stdin);
@@ -70,26 +70,107 @@ void insereU(Universidade **inicio, char nome[], int qtdAlunos)
         *inicio = nova_uni;
         return;
     }
-    else{
-    Universidade *aux = *inicio;
+    else
+    {
+        Universidade *aux = *inicio;
 
+        while (aux->prox != NULL)
+        {
+            if (strcmp(nome, aux->nome) == 0)
+            {
+                printf("Universidade já inserida no sistema!\n");
+                break;
+            }
+            aux = aux->prox;
+        }
+
+        aux->prox = nova_uni;
+        return;
+    }
+}
+
+void insereA(Universidade **inicio)
+{
+    printf("Insira o nome da Universidade: ");
+    char nomeUniversidade[30];
+    fflush(stdin);
+    fgets(nomeUniversidade, 30, stdin);
+    Universidade *aux = *inicio;
+    nomeUniversidade[strcspn(nomeUniversidade, "\n")] = '\0';
+    aux->nome[strcspn(aux->nome, "\n")] = '\0';
     while (aux->prox != NULL)
     {
-        if (strcmp(nome, aux->nome) == 0)
+        aux->nome[strcspn(aux->nome, "\n")] = '\0';
+        if (strcmp(aux->nome, nomeUniversidade) == 0)
         {
-            printf("Universidade já inserida no sistema!\n");
             break;
         }
         aux = aux->prox;
     }
-    
-    aux->prox = nova_uni;
+    if (aux->prox == NULL && strcmp(aux->nome, nomeUniversidade) != 0)
+    {
+        printf("Universidade nao encontrada!\n");
+        return;
+    }
+    Aluno *auxAlunoInicio = aux->inicioAluno;
+    Aluno *auxAluno = aux->inicioAluno;
+    Aluno *alunoStruct = (Aluno *)malloc(sizeof(Aluno));
+    printf("Digite o nome do Aluno: ");
+    fflush(stdin);
+    fgets(alunoStruct->nome, 30, stdin);
+    alunoStruct->nome[strcspn(alunoStruct->nome, "\n")] = '\0';
+    fflush(stdin);
+    printf("Digite o numero de matricula:");
+    fflush(stdin);
+    scanf("%d", &alunoStruct->matricula);
+    printf("Digite a idade do aluno: ");
+    scanf("%d", &alunoStruct->idade);
+    printf("Digite a quantidade de materias do aluno: ");
+    scanf("%d", &alunoStruct->nroDisciplinas);
+    // caso nao existe aluno registrado na universidade!
+    if (auxAlunoInicio == NULL)
+    {
+        alunoStruct->prox = NULL;
+        aux->inicioAluno = alunoStruct;
+        aux->qtdAlunos++;
+    }
+    else
+    {
+        while (auxAluno != NULL)
+        {
+            if (auxAluno->matricula == alunoStruct->matricula)
+            {
+                printf("\nAluno com essa matricula ja esta na universidade !\n");
+                break;
+            }
+            else if (alunoStruct->matricula > auxAluno->matricula && auxAluno->prox == NULL)
+            {
+                auxAluno->prox = alunoStruct;
+                alunoStruct->prox = NULL;
+                aux->qtdAlunos++;
+                printf("\nAluno %s adicionado a universidade %s\n", alunoStruct->nome, aux->nome);
+                break;
+            }
+            else if (alunoStruct->matricula < auxAluno->matricula && auxAluno == auxAlunoInicio)
+            {
+                alunoStruct->prox = auxAluno;
+                aux->inicioAluno = alunoStruct;
+                aux->qtdAlunos++;
+                printf("\nAluno %s adicionado a universidade %s\n", alunoStruct->nome, aux->nome);
+                break;
+            }
+            else if (alunoStruct->matricula > auxAluno->matricula && alunoStruct->matricula < auxAluno->prox->matricula)
+            {
+                alunoStruct->prox = auxAluno->prox;
+                auxAluno->prox = alunoStruct;
+                aux->qtdAlunos++;
+                printf("\nAluno %s adicionado a universidade %s\n", alunoStruct->nome, aux->nome);
+                break;
+            }
+            auxAluno = auxAluno->prox;
+        }
+    }
     return;
-}
-}
-//TODO Inserir ALuno
-void InsereA(Universidade **(inicio->inicioAluno), char nome[],){
-
 }
 
 void salvaDados(Universidade *inicio)
@@ -297,29 +378,12 @@ int main()
             insereU(&inicio, nome, 0);
             fflush(stdin);
             salvaDados(inicio);
-            imprimeU(inicio);
             break;
         case 2:
-            insereA(&inicio, nome, 0);
-            salvaDados(inicio);
-            imprimeA(inicio);
-            break;
-        case 3:
-            buscaUniversidade(inicio, nome);
-            break;
-        case 4:
-            buscaAluno(inicio, nome);
-            break;
-        case 5:
-            removerUniversidade(&inicio);
-            imprimeU(inicio);
+            insereA(&inicio);
             salvaDados(inicio);
             break;
-        case 6:
-            removerAluno(&inicio);
-            imprimeA(inicio);
-            salvaDados(inicio);
-            break;
+
         default:
             printf("Menu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
         }
