@@ -19,7 +19,7 @@ typedef struct Universidade
     struct Aluno *inicioAluno;
 } Universidade;
 
-//TODO Arrumar Imprime Universidade
+// TODO Arrumar Imprime Universidade
 void imprimeU(Universidade *head)
 {
     if (head == NULL)
@@ -35,7 +35,7 @@ void imprimeU(Universidade *head)
         aux = aux->prox;
     }
 }
-//TODO Arrumar Imprime Aluno
+// TODO Arrumar Imprime Aluno
 void imprimeA(Aluno *head)
 {
     if (head == NULL)
@@ -56,7 +56,7 @@ void imprimeA(Aluno *head)
 }
 
 // TODO Arrumar a insercao do comeco
-void insereU(Universidade *inicio, char nome[], int qtdAlunos)
+void insereU(Universidade **inicio, char nome[], int qtdAlunos)
 {
     int i = 0, j = 0;
     char nome_aux[30];
@@ -65,13 +65,13 @@ void insereU(Universidade *inicio, char nome[], int qtdAlunos)
     printf("Insira uma Universidade: ");
     fgets(nome, 30, stdin);
 
-    Universidadenova_uni = malloc(sizeof(Universidade));
+    Universidade *nova_uni = malloc(sizeof(Universidade));
     strcpy(nova_uni->nome, nome);
     nova_uni->qtdAlunos = qtdAlunos;
     nova_uni->prox = NULL;
     nova_uni->inicioAluno = NULL;
 
-    Universidade aux = inicio;
+    Universidade *aux = *inicio;
 
     if (*inicio == NULL)
     {
@@ -93,7 +93,7 @@ void insereU(Universidade *inicio, char nome[], int qtdAlunos)
     if (strcmp(nome, aux->nome) < 0)
     {
 
-        nova_uni->prox = inicio;
+        nova_uni->prox = *inicio;
         *inicio = nova_uni;
         return;
     }
@@ -297,7 +297,6 @@ void removerAluno(Universidade **inicio)
         Aluno *auxAluno = aux->inicioAluno;
         while (auxAluno != NULL)
         {
-
             // Remover no Inicio
             if (auxAluno->matricula == matricula && auxAluno == aux->inicioAluno)
             {
@@ -308,7 +307,7 @@ void removerAluno(Universidade **inicio)
                 return;
                 // Remover do meio
             }
-            else if (auxAluno->prox->matricula == matricula && auxAluno->prox->prox != NULL)
+            else if (auxAluno->prox != NULL && auxAluno->prox->matricula == matricula && auxAluno->prox->prox != NULL)
             {
                 Aluno *aux2 = auxAluno->prox;
                 auxAluno->prox = auxAluno->prox->prox;
@@ -317,7 +316,7 @@ void removerAluno(Universidade **inicio)
                 free(aux2);
                 return;
             }
-            else if (auxAluno->prox->matricula == matricula && auxAluno->prox->prox == NULL)
+            else if (auxAluno->prox != NULL && auxAluno->prox->matricula == matricula && auxAluno->prox->prox == NULL)
             {
                 printf("\nAluno %s Removido da Universidade %s ! \n", auxAluno->prox->nome, aux->nome);
                 aux->qtdAlunos--;
@@ -325,11 +324,14 @@ void removerAluno(Universidade **inicio)
                 free(auxAluno->prox);
                 return;
             }
+            if (auxAluno->prox == NULL)
+            {
+                break;
+            }
             auxAluno = auxAluno->prox;
         }
         aux = aux->prox;
     }
-    // TODO REMOCAO ALUNO FUNCIONANDO +/- NAO ENCONTRA VALOR QUE NAO EXISTE
     printf("\nAluno com esta matricula nao foi entrado!\n");
 }
 
@@ -423,7 +425,7 @@ int main()
     recuperaDados(&inicio);
     salvaDados(inicio);
     char nome[30];
-    //TODO Terminar o menu do console
+    // TODO Terminar o menu do console
     while (op != 0)
     {
         printf("\n\nMenu:\n1.Inserir Uma Nova Unverdidade\n2.Inserir Aluno\n3.Busca Universidade\n4.Busca Aluno\n5.Remove Universidade\n6.Remover Aluno\n0.Fechar\n");
