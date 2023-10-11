@@ -48,7 +48,7 @@ void buscarAluno(Universidade **inicio)
         }
         aux = aux->prox;
     }
-    printf("aluno com esta matricula nao foi entrado!\n");
+    printf("Aluno(a) com esta matricula nao foi entrado!\n");
 }
 
 void buscarUniversidade(Universidade **inicio)
@@ -81,7 +81,6 @@ void buscarUniversidade(Universidade **inicio)
     }
 }
 
-// TODO Arrumar a insercao do comeco
 void insereU(Universidade **inicio)
 {
     int i = 0, j = 0;
@@ -97,35 +96,49 @@ void insereU(Universidade **inicio)
     nova_uni->prox = NULL;
     nova_uni->inicioAluno = NULL;
 
-    Universidade *aux = *inicio;
-
     if (*inicio == NULL)
     {
         *inicio = nova_uni;
+        printf("\nUniversidade %s adicionada a lista!\n\n", nova_uni->nome);
         return;
     }
-
-    while (aux->prox != NULL)
+    Universidade *aux = *inicio;
+     nova_uni->nome[strcspn(nova_uni->nome, "\n")] = '\0';
+    while (aux != NULL)
     {
+         aux->nome[strcspn(aux->nome, "\n")] = '\0';
+        if (strcmp(nova_uni->nome, aux->nome) == 0)
+        {
+            printf("\nUniversidade com esse nome ja existe!\n\n");
+            return;
+        }
+        // Insercao no inicio
+        if (strcmp(nova_uni->nome, aux->nome) < 0)
+        {
+            nova_uni->prox = aux;
+            *inicio = nova_uni;
+            printf("\nUniversidade %s adicionada a lista!\n\n", nova_uni->nome);
+            return;
+            // Insercao no meio
+        }
+        else if (strcmp(nova_uni->nome, aux->nome) > 0 && aux->prox != NULL && strcmp(nova_uni->nome, aux->prox->nome) < 0)
+        {
+            nova_uni->prox = aux->prox;
+            aux->prox = nova_uni;
+            printf("\nUniversidade %s adicionada a lista!\n\n", nova_uni->nome);
+            return;
+            // Insercao no final
+        }
+        else if (strcmp(nova_uni->nome, aux->nome) > 0 && aux->prox == NULL)
+        {
+            aux->prox = nova_uni;
+            nova_uni->prox = NULL;
+            printf("\nUniversidade %s adicionada a lista!\n\n", nova_uni->nome);
+            return;
+            // Verificar se eh igual
+        }
         aux = aux->prox;
     }
-
-    if (strcmp(nome, aux->nome) == 0)
-    {
-        printf("\nUniversidade ja inserida no sistema!\n\n");
-        return;
-    }
-
-    if (strcmp(nome, aux->nome) < 0)
-    {
-
-        nova_uni->prox = *inicio;
-        *inicio = nova_uni;
-        return;
-    }
-
-    aux->prox = nova_uni;
-    return;
 }
 
 void insereA(Universidade **inicio)
@@ -172,7 +185,7 @@ void insereA(Universidade **inicio)
     Aluno *auxAlunoInicio = aux->inicioAluno;
     Aluno *auxAluno = aux->inicioAluno;
     Aluno *alunoStruct = (Aluno *)malloc(sizeof(Aluno));
-    printf("Digite o nome do Aluno: ");
+    printf("Digite o nome do Aluno(a): ");
     fflush(stdin);
     fgets(alunoStruct->nome, 30, stdin);
     alunoStruct->nome[strcspn(alunoStruct->nome, "\n")] = '\0';
@@ -197,7 +210,7 @@ void insereA(Universidade **inicio)
         {
             if (auxAluno->matricula == alunoStruct->matricula)
             {
-                printf("\nAluno com essa matricula ja esta na universidade !\n\n");
+                printf("\nAluno(a) com essa matricula ja esta na universidade !\n\n");
                 break;
             }
             else if (alunoStruct->matricula > auxAluno->matricula && auxAluno->prox == NULL)
