@@ -18,16 +18,15 @@ void insereprocesso(Processo** inicio){
     printf("Digite o nome do processo: ");
     fgets(novo_proc->nome, 30, stdin);
     getchar();
-    printf("\n");
     printf("Entre com sua prioridade: ");
     scanf("%d", &novo_proc->prioridade);
-    printf("\n");
+    fflush(stdin);
+    getchar();
     printf("Entre com sua taxa por ciclo: ");
     scanf("%f", &novo_proc->taxaPorCiclo);
-    printf("\n");
     printf("Entre com o tempo de processamento: ");
     scanf("%d", &novo_proc->tempoProcessamento);
-    printf("\n");
+    printf("\n\n");
     novo_proc->prox = NULL;
 
     if(*inicio == NULL){
